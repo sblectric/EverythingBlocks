@@ -1,0 +1,16 @@
+[
+{
+  "modid": "EverythingBlocks",
+  "name": "Everything Blocks",
+  "description": "Make blocks out of any item for dense storage and decoration!",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["sblectric"],
+  "credits": "",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]

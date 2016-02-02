@@ -1,0 +1,5 @@
+# blocks
+tile.blockEverything.name=Everything Block
+
+# creative tab[s]
+itemGroup.ebMain=EverythingBlocks
