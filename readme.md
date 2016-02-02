@@ -5,3 +5,5 @@ Ever wanted to make blocks of something, but found that you couldn't? Enchanted 
 This repo is for the latest version of the mod, 1.8.9.
 
 This Open Source project (see [License](https://github.com/sblectric/EverythingBlocks/blob/master/license.md)) is a mod for [Minecraft](http://www.minecraft.net/), a game by [Mojang AB](http://mojang.com/).
+
+[Project on CurseForge](http://minecraft.curseforge.com/projects/everything-blocks)
