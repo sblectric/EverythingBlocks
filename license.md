@@ -1,4 +1,4 @@
-## Inventory Tweaks Mod license (MIT)
+## Everything Blocks Mod license (MIT)
 
 Copyright (c) 2016 Steve Blouin
 
