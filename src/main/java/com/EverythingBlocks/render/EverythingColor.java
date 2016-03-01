@@ -80,7 +80,8 @@ public class EverythingColor {
 		
 		// the color of spawn egg blocks is the average of their layers
 		if(item instanceof ItemMonsterPlacer) {
-			return addStackToColorCache(nStack, ColorHelper.averageColors(item.getColorFromItemStack(stack, 0), item.getColorFromItemStack(stack, 1)));
+			IntList colList = (IntList) new IntList().join(item.getColorFromItemStack(stack, 0)).join(item.getColorFromItemStack(stack, 1));
+			return addStackToColorCache(nStack, ColorHelper.averageColors(colList));
 		}
 		
 		// dyeable armor returns a slightly darkened dye color
@@ -88,29 +89,35 @@ public class EverythingColor {
 			return addStackToColorCache(nStack, ColorHelper.averageColors(((ItemArmor)item).getColor(stack), 0, 0.75));
 		}
 		
-		// get the texture from the ItemStack (IN GAME, not in init methods or events!)
-		TextureAtlasSprite sprite = Minecraft.getMinecraft().getRenderItem().getItemModelMesher().getItemModel(nStack).getParticleTexture();
-		if(sprite == null) return addStackToColorCache(nStack, item.getColorFromItemStack(stack, 0)); // default to item stack color
-		int w = sprite.getIconWidth();
-        int h = sprite.getIconHeight();
+		// sensitive code
+        try {
+			// get the texture from the ItemStack (IN GAME, not in init methods or events!)
+			TextureAtlasSprite sprite = Minecraft.getMinecraft().getRenderItem().getItemModelMesher().getItemModel(nStack).getParticleTexture();
+			if(sprite == null) return addStackToColorCache(nStack, item.getColorFromItemStack(stack, 0)); // default to item stack color
+			int w = sprite.getIconWidth();
+	        int h = sprite.getIconHeight();
 		
-		// now look at the pixels
-        IntList colors = new IntList();
-        int[] aint = sprite.getFrameTextureData(0)[0];
-		for(int x = 0; x < w; x++) {
-			for(int y = 0; y < h; y++) {
-				int c = aint[x + y * h];
-				if(c == 0) continue; // skip alpha pixels
-				colors.add(c);
+        	// now look at the pixels
+	        IntList colors = new IntList();
+	        int[] aint = sprite.getFrameTextureData(0)[0];
+			for(int x = 0; x < w; x++) {
+				for(int y = 0; y < h; y++) {
+					int c = aint[x + y * h];
+					if(c == 0) continue; // skip alpha pixels
+					colors.add(c);
+				}
 			}
-		}
-		
-		// average them and return
-		try {
-			Integer col = ColorHelper.averageColors(colors);
-			return addStackToColorCache(nStack, col); // add this result to the cache and return it
+			
+			// this is the base color
+			int baseColor = ColorHelper.averageColors(colors);
+			
+			// now get the defined item stack color
+			int stackColor = item.getColorFromItemStack(stack, 0);
+			
+			// get the subtractive mix, add it to the cache, and return!
+			return addStackToColorCache(nStack, ColorHelper.subtractMixColors(baseColor, stackColor));
 		} catch (Exception e) {
-			Log.logger.error("Exception caught getting color from ItemStack " + nStack.toString());
+			Log.logger.warn("Exception caught getting color from ItemStack " + nStack.toString());
 			return addStackToColorCache(nStack, DEFAULT_COLOR);
 		}
 	}

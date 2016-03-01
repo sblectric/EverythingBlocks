@@ -14,7 +14,7 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.Optional;
 
-import com.EverythingBlocks.blocks.BlockEverything;
+import com.EverythingBlocks.api.IBlockEverything;
 import com.EverythingBlocks.blocks.EBBlocks;
 import com.EverythingBlocks.tiles.TileEntityBlockEverything;
 
@@ -28,10 +28,10 @@ public class WailaTileHandler implements IWailaDataProvider {
 	public static void callbackRegister(IWailaRegistrar register) {
 		WailaTileHandler instance = new WailaTileHandler();
 		
-		// register providers for the block needed
-		register.registerStackProvider(instance, BlockEverything.class);
-		register.registerBodyProvider(instance, BlockEverything.class);
-		register.registerNBTProvider(instance, BlockEverything.class);
+		// register providers for the blocks needed
+		register.registerStackProvider(instance, IBlockEverything.class);
+		register.registerBodyProvider(instance, IBlockEverything.class);
+		register.registerNBTProvider(instance, IBlockEverything.class);
 	}
 
 	/** Change tooltip item stack */
@@ -44,7 +44,7 @@ public class WailaTileHandler implements IWailaDataProvider {
 		if(te instanceof TileEntityBlockEverything) {
 			TileEntityBlockEverything tile = (TileEntityBlockEverything)te;
 			if(tile.contains == null) return accessor.getStack();
-			ItemStack stack = new ItemStack(EBBlocks.blockEverything);
+			ItemStack stack = new ItemStack(accessor.getBlock());
 			stack.setTagCompound(new NBTTagCompound());
 			NBTTagCompound tags = new NBTTagCompound();
 			tile.contains.writeToNBT(tags);

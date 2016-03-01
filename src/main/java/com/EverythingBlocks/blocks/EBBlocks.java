@@ -11,6 +11,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import com.EverythingBlocks.api.EverythingBlocksAPI;
 import com.EverythingBlocks.creativetabs.EBCreativeTabs;
 import com.EverythingBlocks.items.ItemBlockEverything;
+import com.EverythingBlocks.items.ItemSlabEverything;
 import com.EverythingBlocks.ref.RefStrings;
 
 public class EBBlocks {
@@ -20,16 +21,30 @@ public class EBBlocks {
 		registerBlocks();
 	}
 	
+	// the blocks
 	public static BlockEverything blockEverything;
+	public static SlabEverything slabEverything;
+	public static StairEverything stairEverything;
 	
 	private static void addBlocks() {
 		blockEverything = (BlockEverything) new BlockEverything().
-				setUnlocalizedName("blockEverything").setCreativeTab(EBCreativeTabs.main);//setBlockTextureName(RefStrings.MODID + ":everything_block");
-		EverythingBlocksAPI.blockEverything = blockEverything; // direct the API to this block
+				setUnlocalizedName("blockEverything").setCreativeTab(EBCreativeTabs.main);
+		slabEverything = (SlabEverything) new SlabEverything().
+				setUnlocalizedName("slabEverything").setCreativeTab(EBCreativeTabs.main);
+		stairEverything = (StairEverything) new StairEverything(blockEverything).
+				setUnlocalizedName("stairEverything").setCreativeTab(EBCreativeTabs.main);
 	}
 	
 	private static void registerBlocks() {
+		// register the blocks in game
 		GameRegistry.registerBlock(blockEverything, ItemBlockEverything.class, blockEverything.getUnlocalizedName().substring(5));
+		GameRegistry.registerBlock(slabEverything, ItemSlabEverything.class, slabEverything.getUnlocalizedName().substring(5), slabEverything);
+		GameRegistry.registerBlock(stairEverything, ItemBlockEverything.class, stairEverything.getUnlocalizedName().substring(5));
+		
+		// direct the API to the blocks
+		EverythingBlocksAPI.blockEverything = blockEverything;
+		EverythingBlocksAPI.slabEverything = slabEverything;
+		EverythingBlocksAPI.stairEverything = stairEverything;
 	}
 	
 	@SideOnly(Side.CLIENT)
@@ -37,6 +52,10 @@ public class EBBlocks {
 		RenderItem renderItem = Minecraft.getMinecraft().getRenderItem();
 		renderItem.getItemModelMesher().register(Item.getItemFromBlock(blockEverything), 0, 
 				new ModelResourceLocation(RefStrings.MODID + ":" + blockEverything.getUnlocalizedName().substring(5), "inventory"));
+		renderItem.getItemModelMesher().register(Item.getItemFromBlock(slabEverything), 0, 
+				new ModelResourceLocation(RefStrings.MODID + ":" + slabEverything.getUnlocalizedName().substring(5), "inventory"));
+		renderItem.getItemModelMesher().register(Item.getItemFromBlock(stairEverything), 0, 
+				new ModelResourceLocation(RefStrings.MODID + ":" + stairEverything.getUnlocalizedName().substring(5), "inventory"));
 	}
 
 }

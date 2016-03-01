@@ -1,9 +1,7 @@
 package com.EverythingBlocks.util;
 
-import java.util.LinkedList;
-
 /** A more useful integer list */
-public class IntList extends LinkedList<Integer> {
+public class IntList extends JointList<Integer> {
 	
 	public IntList(){
 		super();

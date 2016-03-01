@@ -1,15 +1,18 @@
 package com.EverythingBlocks.crafting;
 
 import com.EverythingBlocks.blocks.EBBlocks;
+import com.EverythingBlocks.items.ItemBlockEverything;
+import com.EverythingBlocks.util.EBUtils;
 import com.EverythingBlocks.util.JointList;
 
+import net.minecraft.block.Block;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.world.World;
 
-/** Recipe for all Everything Blocks (9 x item -> block) */
-public class EverythingBlockCraftingRecipes implements IRecipe {
+/** Recipe for Everything Stairs (6x block -> 8 stairs) */
+public class EverythingStairCraftingRecipes implements IRecipe {
 
 	/** Does the recipe match as expected? */
 	@Override
@@ -18,36 +21,38 @@ public class EverythingBlockCraftingRecipes implements IRecipe {
 		return isValidRecipeGrid(inv);
 	}
 	
-	/** Check if the grid is valid (9 of same eligible item) */
+	/** Check if the grid is valid (6 of same eligible item) */
 	private boolean isValidRecipeGrid(InventoryCrafting inv) {
 		JointList<ItemStack> s = new JointList();
 		for(int i = 0; i < inv.getSizeInventory(); i++) {
 			if(inv.getStackInSlot(i) != null) s.add(inv.getStackInSlot(i));
 		}
 		
-		// make sure they are 9 of the same item
-		if(s.size() != 9) return false;
-		ItemStack comp = null;
-		for(ItemStack astack : s) {
-			ItemStack stack = astack.copy();
-			stack.stackSize = 1; // only compare single-size stacks
-			if(comp == null) {
-				comp = stack;
-			} else {
-				if(!ItemStack.areItemStacksEqual(stack, comp)) return false;
+		// size is 6
+		if(s.size() != 6) return false;
+		
+		// make sure it matches a stair recipe style
+		if(Block.getBlockFromItem(s.get(0).getItem()) == EBBlocks.blockEverything) {
+			if(EBUtils.areItemStacksEqualandValid(inv.getStackInSlot(0), inv.getStackInSlot(3), inv.getStackInSlot(4), inv.getStackInSlot(6), 
+					inv.getStackInSlot(7), inv.getStackInSlot(8))) {
+				return true;
+			}
+			if(EBUtils.areItemStacksEqualandValid(inv.getStackInSlot(2), inv.getStackInSlot(4), inv.getStackInSlot(5), inv.getStackInSlot(6), 
+					inv.getStackInSlot(7), inv.getStackInSlot(8))) {
+				return true;
 			}
 		}
-		
-		// make sure that item is a valid block constructor
-		return CraftableToBlock.isItemStackValidAndCraftable(comp);
+		return false;
 	}
 
 	/** Result is a new block containing the ItemStack type */
 	@Override
 	public ItemStack getCraftingResult(InventoryCrafting inv) {
-		ItemStack base = inv.getStackInSlot(0).copy();
-		base.stackSize = 9; // set the stack size
-		return EBBlocks.blockEverything.getBlockContaining(base);
+		ItemStack base = inv.getStackInSlot(6);
+		if(base == null) return null;
+		ItemStack stairs = new ItemStack(EBBlocks.stairEverything, 8);
+		stairs.setTagCompound(base.getTagCompound());
+		return stairs;
 	}
 
 	/** Size of grid */
@@ -59,7 +64,7 @@ public class EverythingBlockCraftingRecipes implements IRecipe {
 	/** Basic recipe output */
 	@Override
 	public ItemStack getRecipeOutput() {
-		return new ItemStack(EBBlocks.blockEverything);
+		return new ItemStack(EBBlocks.stairEverything, 8);
 	}
 
 	/** No remaining items */

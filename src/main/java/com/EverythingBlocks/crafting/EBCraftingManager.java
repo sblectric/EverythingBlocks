@@ -24,12 +24,21 @@ public class EBCraftingManager {
 		// Everything Block Recipes
 		GameRegistry.addRecipe(new EverythingBlockCraftingRecipes());
 		GameRegistry.addRecipe(new EverythingBlockDecraftingRecipes());
+		GameRegistry.addRecipe(new EverythingSlabCraftingRecipes());
+		GameRegistry.addRecipe(new EverythingStairCraftingRecipes());
+		GameRegistry.addRecipe(new EverythingStairDecraftingRecipes());
 		RecipeSorter.register(RefStrings.MODID + ":EBCrafting", EverythingBlockCraftingRecipes.class, Category.SHAPED, "after:minecraft:shaped");
 		RecipeSorter.register(RefStrings.MODID + ":EBDecrafting", EverythingBlockDecraftingRecipes.class, Category.SHAPELESS, "after:minecraft:shapeless");
+		RecipeSorter.register(RefStrings.MODID + ":EBSlabCrafting", EverythingSlabCraftingRecipes.class, Category.SHAPED, "after:minecraft:shaped");
+		RecipeSorter.register(RefStrings.MODID + ":EBStairCrafting", EverythingStairCraftingRecipes.class, Category.SHAPED, "after:minecraft:shaped");
+		RecipeSorter.register(RefStrings.MODID + ":EBStairDecrafting", EverythingStairDecraftingRecipes.class, Category.SHAPELESS, "after:minecraft:shapeless");
 		
 		// direct the API to these recipes
 		EverythingBlocksAPI.craftingRecipes = new EverythingBlockCraftingRecipes();
 		EverythingBlocksAPI.decraftingRecipes = new EverythingBlockDecraftingRecipes();
+		EverythingBlocksAPI.craftingRecipesSlabs = new EverythingSlabCraftingRecipes();
+		EverythingBlocksAPI.craftingRecipesStairs = new EverythingStairCraftingRecipes();
+		EverythingBlocksAPI.decraftingRecipesStairs = new EverythingStairDecraftingRecipes();
 		
 	}
 
@@ -82,10 +91,14 @@ public class EBCraftingManager {
 			{
 				IRecipe irecipe = (IRecipe)recipes.get(j);
 
-				if((!Arrays.asList(excluding).contains(irecipe.getClass())) && irecipe.matches(inv, world))
-				{
-					return irecipe.getCraftingResult(inv);
+				// 1.1.1 Botania fix (try catch)
+				try {
+					if((!Arrays.asList(excluding).contains(irecipe.getClass())) && irecipe.matches(inv, world))
+					{
+						return irecipe.getCraftingResult(inv);
+					}
 				}
+				catch (Exception e) { }
 			}
 
 			return null;

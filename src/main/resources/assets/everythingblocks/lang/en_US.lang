@@ -1,5 +1,9 @@
 # blocks
 tile.blockEverything.name=Everything Block
+tile.slabEverything.name=Everything Slab
+tile.stairEverything.name=Everything Stairs
+tile.fenceEverything.name=Everything Fence
+tile.wallEverything.name=Everything Wall
 
 # creative tab[s]
 itemGroup.ebMain=EverythingBlocks

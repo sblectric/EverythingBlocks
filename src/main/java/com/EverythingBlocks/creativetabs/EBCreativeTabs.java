@@ -1,21 +1,28 @@
 package com.EverythingBlocks.creativetabs;
 
+import net.minecraft.creativetab.CreativeTabs;
+
 import com.EverythingBlocks.blocks.EBBlocks;
+import com.EverythingBlocks.config.EBConfig;
 
 public class EBCreativeTabs {
 	
-	public static EBCreativeTab main;
+	public static CreativeTabs main;
 	
 	public static void mainRegistry() {
 		registerCreativeTabs();
 	}
 	
 	private static void registerCreativeTabs() {
-		main = new EBCreativeTab("ebMain");
+		if(EBConfig.enableCreativeTabVariants) {
+			main = new EBCreativeTab("ebMain");
+		} else {
+			main = CreativeTabs.tabDecorations;
+		}
 	}
 	
 	public static void updateCreativeTabs() {
-		main.updateItem(EBBlocks.blockEverything);
+		if(EBConfig.enableCreativeTabVariants) ((EBCreativeTab)main).updateItem(EBBlocks.blockEverything);
 	}
 
 }

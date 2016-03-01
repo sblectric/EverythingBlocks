@@ -8,6 +8,8 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemSkull;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.GameData;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.common.registry.GameRegistry.UniqueIdentifier;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
@@ -31,6 +33,10 @@ public class CraftableToBlock {
 		Iterable<Item> allItems;
 		allItems = GameData.getItemRegistry().typeSafeIterable();
 		for(Item i : allItems) {
+			// check to make sure the mod for the item is not BL'd
+			UniqueIdentifier UID = GameRegistry.findUniqueIdentifierFor(i);
+			if(EBConfig.blacklistedMods.contains(UID.modId)) continue;
+			
 			// get all of the exposed subitems for this item
 			JointList<ItemStack> j = new JointList<ItemStack>();
 			if(i instanceof IOverrideEBSubtypes) {

@@ -13,9 +13,7 @@ public class TileEntityBlockEverything extends TileEntity {
 	
 	public ItemStack contains;
 	
-	public TileEntityBlockEverything() {
-		this.blockType = EBBlocks.blockEverything;
-	}
+	public TileEntityBlockEverything() {}
 	
 	/** Load tile entity data */
 	@Override
@@ -28,9 +26,11 @@ public class TileEntityBlockEverything extends TileEntity {
     @Override
     public void writeToNBT(NBTTagCompound tag) {
     	super.writeToNBT(tag);
-    	NBTTagCompound c = new NBTTagCompound();
-    	this.contains.writeToNBT(c);
-    	tag.setTag("contains", c);
+    	if(this.contains != null) {
+	    	NBTTagCompound c = new NBTTagCompound();
+	    	this.contains.writeToNBT(c);
+	    	tag.setTag("contains", c);
+    	}
     }
     
 	@Override

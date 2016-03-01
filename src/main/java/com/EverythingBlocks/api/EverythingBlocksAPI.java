@@ -12,6 +12,12 @@ public class EverythingBlocksAPI {
 	/** Use to reference the Everything Block. Cast it to a Block to use regular block methods! */
 	public static IBlockEverything blockEverything;
 	
+	/** Use to reference the Everything Slab. */
+	public static IBlockEverything slabEverything;
+	
+	/** Use to reference the Everything Stairs. */
+	public static IBlockEverything stairEverything;
+	
 	/** Single IRecipe holding all Everything Block recipes (9x item -> block). 
 	 * You can't modify this recipe, only reference it. */
 	public static IRecipe craftingRecipes;
@@ -19,6 +25,18 @@ public class EverythingBlocksAPI {
 	/** Single IRecipe holding all Everything Block recipes (block -> 9x item). 
 	 * You can't modify this recipe, only reference it. */
 	public static IRecipe decraftingRecipes;
+	
+	/** Single IRecipe holding all Everything Slab recipes (3x Everything Blocks -> 6x Everything Slabs). 
+	 * You can't modify this recipe, only reference it. */
+	public static IRecipe craftingRecipesSlabs;
+	
+	/** Single IRecipe holding all Everything Stair recipes (6x Everything Blocks -> 4x Everything Stairs). 
+	 * You can't modify this recipe, only reference it. */
+	public static IRecipe craftingRecipesStairs;
+	
+	/** Single IRecipe holding all Everything Stair recipes (2x Everything Stair -> 1x Everything Block). 
+	 * You can't modify this recipe, only reference it. */
+	public static IRecipe decraftingRecipesStairs;
 	
 	/** For the following methods, an ItemStack item metadata of OreDictionary.WILDCARD_VALUE sets it for all
 	 * items of the specified type. Call all of these methods before post-initialization. */

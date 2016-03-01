@@ -37,14 +37,15 @@ public class ColorHelper {
 		return new Color(reds.average(), greens.average(), blues.average()).getRGB();
 	}
 	
-	public static int averageColors(int col1, int col2) {
-		int r1 = ColorHelper.redFromColor(col1);
-		int g1 = ColorHelper.greenFromColor(col1);
-		int b1 = ColorHelper.blueFromColor(col1);
-		int r2 = ColorHelper.redFromColor(col2);
-		int g2 = ColorHelper.greenFromColor(col2);
-		int b2 = ColorHelper.blueFromColor(col2);
-		return new Color((r1 + r2) / 2, (g1 + g2) / 2, (b1 + b2) / 2).getRGB();
+	public static int subtractMixColors(int baseColor, int clampColor) {
+		int baseRed = redFromColor(baseColor);
+		int baseGreen = greenFromColor(baseColor);
+		int baseBlue = blueFromColor(baseColor);
+		int clampRed = redFromColor(clampColor);
+		int clampGreen = greenFromColor(clampColor);
+		int clampBlue = blueFromColor(clampColor);
+		
+		return new Color(baseRed * clampRed / 255, baseGreen * clampGreen / 255, baseBlue * clampBlue / 255).getRGB();
 	}
 	
 	public static int averageColors(int col1, int col2, double pFirst) {

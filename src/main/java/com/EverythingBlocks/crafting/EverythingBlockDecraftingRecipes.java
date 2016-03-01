@@ -4,6 +4,7 @@ import com.EverythingBlocks.blocks.EBBlocks;
 import com.EverythingBlocks.items.ItemBlockEverything;
 import com.EverythingBlocks.util.JointList;
 
+import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
@@ -26,7 +27,7 @@ public class EverythingBlockDecraftingRecipes implements IRecipe {
 		}
 		
 		// one Everything Block
-		if(s.size() == 1 && s.get(0).getItem() instanceof ItemBlockEverything && s.get(0).hasTagCompound()) {
+		if(s.size() == 1 && Block.getBlockFromItem(s.get(0).getItem()) == EBBlocks.blockEverything && s.get(0).hasTagCompound()) {
 			return true;
 		} else {		
 			return false;

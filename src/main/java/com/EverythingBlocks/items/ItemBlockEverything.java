@@ -16,20 +16,24 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import org.lwjgl.input.Keyboard;
+
 import com.EverythingBlocks.api.IAddEBInformation;
+import com.EverythingBlocks.api.IBlockEverything;
 import com.EverythingBlocks.api.IReplaceEBInformation;
-import com.EverythingBlocks.blocks.BlockEverything;
 import com.EverythingBlocks.render.EverythingColor;
 import com.EverythingBlocks.tiles.TileEntityBlockEverything;
 import com.EverythingBlocks.util.ColorHelper;
+import com.EverythingBlocks.util.EBUtils;
+import com.EverythingBlocks.util.ForgeUtils;
 
 public class ItemBlockEverything extends ItemBlock {
 	
-	private BlockEverything block;
+	private IBlockEverything block;
 
 	public ItemBlockEverything(Block base) {
 		super(base);
-		this.block = (BlockEverything)base;
+		this.block = (IBlockEverything)base;
 	}
 	
 	/**
@@ -48,7 +52,8 @@ public class ItemBlockEverything extends ItemBlock {
 			Item item = contains.getItem();
 			
 			// add the name and amount (rarity sensitive)
-			list.add(ColorHelper.darkenFormatting(contains.getRarity().rarityColor) + contains.getDisplayName() + " x " + contains.stackSize);
+			list.add(ColorHelper.darkenFormatting(contains.getRarity().rarityColor) + 
+					contains.getDisplayName() + " x " + EBUtils.dFormat.format(contains.stackSize * block.getCountModifier()));
 			
 			// add default item lore to the container lore
 			if(!(item instanceof IReplaceEBInformation)) {
@@ -58,6 +63,11 @@ public class ItemBlockEverything extends ItemBlock {
 			// add EverythingBlocks lore to the container lore
 			if(item instanceof IAddEBInformation) {
 				((IAddEBInformation)item).addEBInformation(contains, player, list);
+			}
+			
+			// what mod is it from?
+			if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+				list.add(EnumChatFormatting.DARK_GRAY + "" + EnumChatFormatting.ITALIC + ForgeUtils.getModNameFromItem(item));
 			}
 			
 		} else {
@@ -101,9 +111,9 @@ public class ItemBlockEverything extends ItemBlock {
 		if(stack.hasTagCompound()) {
 			ItemStack contains = block.getItemStackFromBlock(stack);
 			try {
-				return contains.getDisplayName() + " Block";
+				return contains.getDisplayName() + " " + block.getBlockSuffix();
 			} catch(Exception e) {
-				return StatCollector.translateToLocal(contains.getUnlocalizedName() + ".name") + " Block";
+				return StatCollector.translateToLocal(contains.getUnlocalizedName() + ".name") + " " + block.getBlockSuffix();
 			}
 		} else {
 			return super.getItemStackDisplayName(stack);
