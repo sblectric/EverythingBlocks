@@ -27,6 +27,9 @@ public class StairEverything extends BlockStairs implements ITileEntityProvider,
 	/** An Everything Stair is based on the Everything Block */
 	public StairEverything(BlockEverything block) {
 		super(block.getStateFromMeta(0));
+		this.setHardness(3.0f);
+		this.setResistance(15.0f);
+		this.useNeighborBrightness = true;
 	}
 	
 	/** The block suffix */
