@@ -1,0 +1,20 @@
+{
+    "textures": {
+        "all": "EverythingBlocks:blocks/everything_block",
+		"particle": "EverythingBlocks:blocks/everything_block"
+    },
+    "elements": [
+        {   "from": [ 4, 0, 4 ],
+            "to": [ 12, 16, 12 ],
+            "faces": {
+                "down":  { "uv": [ 4, 4, 12, 12 ], "texture": "#all", "cullface": "down", "tintindex": 0 },
+                "up":    { "uv": [ 4, 4, 12, 12 ], "texture": "#all", "cullface": "up", "tintindex": 0 },
+                "north": { "uv": [ 4, 0, 12, 16 ], "texture": "#all", "tintindex": 0  },
+                "south": { "uv": [ 4, 0, 12, 16 ], "texture": "#all", "tintindex": 0  },
+                "west":  { "uv": [ 4, 0, 12, 16 ], "texture": "#all", "tintindex": 0  },
+                "east":  { "uv": [ 4, 0, 12, 16 ], "texture": "#all", "tintindex": 0  }
+            },
+            "__comment": "Center post"
+        }
+    ]
+}

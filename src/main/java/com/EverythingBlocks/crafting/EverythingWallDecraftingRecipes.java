@@ -10,28 +10,27 @@ import com.EverythingBlocks.blocks.EBBlocks;
 import com.EverythingBlocks.util.EBUtils;
 import com.EverythingBlocks.util.JointList;
 
-/** Recipe for Everything Stairs (4x stairs -> 3 blocks, shapeless) */
-public class EverythingStairDecraftingRecipes implements IRecipe {
+/** Recipe for Everything Walls (1x wall -> 1 wall, shapeless) */
+public class EverythingWallDecraftingRecipes implements IRecipe {
 
 	/** Does the recipe match as expected? */
 	@Override
 	public boolean matches(InventoryCrafting inv, World world) {
-		if(inv.getSizeInventory() < 4) return false; // need at least 4 spaces
 		return isValidRecipeGrid(inv);
 	}
 	
-	/** Check if the grid is valid (4 of same eligible item) */
+	/** Check if the grid is valid (1 of same eligible item) */
 	private boolean isValidRecipeGrid(InventoryCrafting inv) {
 		JointList<ItemStack> s = new JointList();
 		for(int i = 0; i < inv.getSizeInventory(); i++) {
 			if(inv.getStackInSlot(i) != null) s.add(inv.getStackInSlot(i));
 		}
 		
-		// size is 4
-		if(s.size() != 4) return false;
+		// size is 1
+		if(s.size() != 1) return false;
 		
-		// 4 of the same item
-		if(Block.getBlockFromItem(s.get(0).getItem()) == EBBlocks.stairEverything && EBUtils.areItemStacksEqualandValid(s.toArray(new ItemStack[s.size()]))) {
+		// 1 item
+		if(Block.getBlockFromItem(s.get(0).getItem()) == EBBlocks.wallEverything) {
 			return true;
 		}		
 		return false;
@@ -42,10 +41,10 @@ public class EverythingStairDecraftingRecipes implements IRecipe {
 	public ItemStack getCraftingResult(InventoryCrafting inv) {
 		ItemStack base = null;
 		for(int i = 0; i < inv.getSizeInventory(); i++) {
-			if(inv.getStackInSlot(i) != null) base = inv.getStackInSlot(i);
+			if(base == null) base = inv.getStackInSlot(i);
 		}
 		if(base == null) return null;
-		ItemStack blocks = new ItemStack(EBBlocks.blockEverything, 3);
+		ItemStack blocks = new ItemStack(EBBlocks.blockEverything, 1);
 		blocks.setTagCompound(base.getTagCompound());
 		return blocks;
 	}
@@ -53,13 +52,13 @@ public class EverythingStairDecraftingRecipes implements IRecipe {
 	/** Size of grid */
 	@Override
 	public int getRecipeSize() {
-		return 4;
+		return 1;
 	}
 	
 	/** Basic recipe output */
 	@Override
 	public ItemStack getRecipeOutput() {
-		return new ItemStack(EBBlocks.blockEverything, 3);
+		return new ItemStack(EBBlocks.blockEverything, 1);
 	}
 
 	/** No remaining items */

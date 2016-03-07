@@ -10,56 +10,60 @@ import com.EverythingBlocks.blocks.EBBlocks;
 import com.EverythingBlocks.util.EBUtils;
 import com.EverythingBlocks.util.JointList;
 
-/** Recipe for Everything Stairs (4x stairs -> 3 blocks, shapeless) */
-public class EverythingStairDecraftingRecipes implements IRecipe {
+/** Recipe for Everything Walls (6x block -> 6 walls) */
+public class EverythingWallCraftingRecipes implements IRecipe {
 
 	/** Does the recipe match as expected? */
 	@Override
 	public boolean matches(InventoryCrafting inv, World world) {
-		if(inv.getSizeInventory() < 4) return false; // need at least 4 spaces
+		if(inv.getSizeInventory() < 9) return false; // only 3x3 works
 		return isValidRecipeGrid(inv);
 	}
 	
-	/** Check if the grid is valid (4 of same eligible item) */
+	/** Check if the grid is valid (6 of same eligible item) */
 	private boolean isValidRecipeGrid(InventoryCrafting inv) {
 		JointList<ItemStack> s = new JointList();
 		for(int i = 0; i < inv.getSizeInventory(); i++) {
 			if(inv.getStackInSlot(i) != null) s.add(inv.getStackInSlot(i));
 		}
 		
-		// size is 4
-		if(s.size() != 4) return false;
+		// size is 6
+		if(s.size() != 6) return false;
 		
-		// 4 of the same item
-		if(Block.getBlockFromItem(s.get(0).getItem()) == EBBlocks.stairEverything && EBUtils.areItemStacksEqualandValid(s.toArray(new ItemStack[s.size()]))) {
-			return true;
-		}		
+		// make sure it matches a wall recipe style
+		if(Block.getBlockFromItem(s.get(0).getItem()) == EBBlocks.blockEverything) {
+			if(EBUtils.areItemStacksEqualandValid(inv.getStackInSlot(0), inv.getStackInSlot(1), inv.getStackInSlot(2), inv.getStackInSlot(3), 
+					inv.getStackInSlot(4), inv.getStackInSlot(5))) {
+				return true;
+			}
+			if(EBUtils.areItemStacksEqualandValid(inv.getStackInSlot(3), inv.getStackInSlot(4), inv.getStackInSlot(5), inv.getStackInSlot(6), 
+					inv.getStackInSlot(7), inv.getStackInSlot(8))) {
+				return true;
+			}
+		}
 		return false;
 	}
 
 	/** Result is a new block containing the ItemStack type */
 	@Override
 	public ItemStack getCraftingResult(InventoryCrafting inv) {
-		ItemStack base = null;
-		for(int i = 0; i < inv.getSizeInventory(); i++) {
-			if(inv.getStackInSlot(i) != null) base = inv.getStackInSlot(i);
-		}
+		ItemStack base = inv.getStackInSlot(6);
 		if(base == null) return null;
-		ItemStack blocks = new ItemStack(EBBlocks.blockEverything, 3);
-		blocks.setTagCompound(base.getTagCompound());
-		return blocks;
+		ItemStack walls = new ItemStack(EBBlocks.wallEverything, 6);
+		walls.setTagCompound(base.getTagCompound());
+		return walls;
 	}
 
 	/** Size of grid */
 	@Override
 	public int getRecipeSize() {
-		return 4;
+		return 9;
 	}
 	
 	/** Basic recipe output */
 	@Override
 	public ItemStack getRecipeOutput() {
-		return new ItemStack(EBBlocks.blockEverything, 3);
+		return new ItemStack(EBBlocks.wallEverything, 6);
 	}
 
 	/** No remaining items */
@@ -67,5 +71,5 @@ public class EverythingStairDecraftingRecipes implements IRecipe {
 	public ItemStack[] getRemainingItems(InventoryCrafting inv) {
 		return new ItemStack[inv.getSizeInventory()];
 	}
-
+	
 }

@@ -25,6 +25,7 @@ public class EBBlocks {
 	public static BlockEverything blockEverything;
 	public static SlabEverything slabEverything;
 	public static StairEverything stairEverything;
+	public static WallEverything wallEverything;
 	
 	private static void addBlocks() {
 		blockEverything = (BlockEverything) new BlockEverything().
@@ -33,6 +34,8 @@ public class EBBlocks {
 				setUnlocalizedName("slabEverything").setCreativeTab(EBCreativeTabs.main);
 		stairEverything = (StairEverything) new StairEverything(blockEverything).
 				setUnlocalizedName("stairEverything").setCreativeTab(EBCreativeTabs.main);
+		wallEverything = (WallEverything) new WallEverything(blockEverything).
+				setUnlocalizedName("wallEverything").setCreativeTab(EBCreativeTabs.main);
 	}
 	
 	private static void registerBlocks() {
@@ -40,11 +43,13 @@ public class EBBlocks {
 		GameRegistry.registerBlock(blockEverything, ItemBlockEverything.class, blockEverything.getUnlocalizedName().substring(5));
 		GameRegistry.registerBlock(slabEverything, ItemSlabEverything.class, slabEverything.getUnlocalizedName().substring(5), slabEverything);
 		GameRegistry.registerBlock(stairEverything, ItemBlockEverything.class, stairEverything.getUnlocalizedName().substring(5));
+		GameRegistry.registerBlock(wallEverything, ItemBlockEverything.class, wallEverything.getUnlocalizedName().substring(5));
 		
 		// direct the API to the blocks
 		EverythingBlocksAPI.blockEverything = blockEverything;
 		EverythingBlocksAPI.slabEverything = slabEverything;
 		EverythingBlocksAPI.stairEverything = stairEverything;
+		EverythingBlocksAPI.wallEverything = wallEverything;
 	}
 	
 	@SideOnly(Side.CLIENT)
@@ -56,6 +61,8 @@ public class EBBlocks {
 				new ModelResourceLocation(RefStrings.MODID + ":" + slabEverything.getUnlocalizedName().substring(5), "inventory"));
 		renderItem.getItemModelMesher().register(Item.getItemFromBlock(stairEverything), 0, 
 				new ModelResourceLocation(RefStrings.MODID + ":" + stairEverything.getUnlocalizedName().substring(5), "inventory"));
+		renderItem.getItemModelMesher().register(Item.getItemFromBlock(wallEverything), 0, 
+				new ModelResourceLocation(RefStrings.MODID + ":" + wallEverything.getUnlocalizedName().substring(5), "inventory"));
 	}
 
 }

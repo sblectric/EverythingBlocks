@@ -27,11 +27,15 @@ public class EBCraftingManager {
 		GameRegistry.addRecipe(new EverythingSlabCraftingRecipes());
 		GameRegistry.addRecipe(new EverythingStairCraftingRecipes());
 		GameRegistry.addRecipe(new EverythingStairDecraftingRecipes());
+		GameRegistry.addRecipe(new EverythingWallCraftingRecipes());
+		GameRegistry.addRecipe(new EverythingWallDecraftingRecipes());
 		RecipeSorter.register(RefStrings.MODID + ":EBCrafting", EverythingBlockCraftingRecipes.class, Category.SHAPED, "after:minecraft:shaped");
 		RecipeSorter.register(RefStrings.MODID + ":EBDecrafting", EverythingBlockDecraftingRecipes.class, Category.SHAPELESS, "after:minecraft:shapeless");
 		RecipeSorter.register(RefStrings.MODID + ":EBSlabCrafting", EverythingSlabCraftingRecipes.class, Category.SHAPED, "after:minecraft:shaped");
 		RecipeSorter.register(RefStrings.MODID + ":EBStairCrafting", EverythingStairCraftingRecipes.class, Category.SHAPED, "after:minecraft:shaped");
 		RecipeSorter.register(RefStrings.MODID + ":EBStairDecrafting", EverythingStairDecraftingRecipes.class, Category.SHAPELESS, "after:minecraft:shapeless");
+		RecipeSorter.register(RefStrings.MODID + ":EBWallCrafting", EverythingWallCraftingRecipes.class, Category.SHAPED, "after:minecraft:shaped");
+		RecipeSorter.register(RefStrings.MODID + ":EBWallDecrafting", EverythingWallDecraftingRecipes.class, Category.SHAPELESS, "after:minecraft:shapeless");
 		
 		// direct the API to these recipes
 		EverythingBlocksAPI.craftingRecipes = new EverythingBlockCraftingRecipes();
@@ -39,6 +43,8 @@ public class EBCraftingManager {
 		EverythingBlocksAPI.craftingRecipesSlabs = new EverythingSlabCraftingRecipes();
 		EverythingBlocksAPI.craftingRecipesStairs = new EverythingStairCraftingRecipes();
 		EverythingBlocksAPI.decraftingRecipesStairs = new EverythingStairDecraftingRecipes();
+		EverythingBlocksAPI.craftingRecipesWalls = new EverythingStairCraftingRecipes();
+		EverythingBlocksAPI.decraftingRecipesWalls = new EverythingStairDecraftingRecipes();
 		
 	}
 
