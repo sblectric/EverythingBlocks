@@ -31,7 +31,7 @@ public class EverythingStairDecraftingRecipes implements IRecipe {
 		if(s.size() != 4) return false;
 		
 		// 4 of the same item
-		if(Block.getBlockFromItem(s.get(0).getItem()) == EBBlocks.stairEverything && EBUtils.areItemStacksEqualandValid(s.toArray(new ItemStack[s.size()]))) {
+		if(Block.getBlockFromItem(s.get(0).getItem()) == EBBlocks.stairEverything && EBUtils.areItemStacksEqualForCrafting(s.toArray(new ItemStack[s.size()]))) {
 			return true;
 		}		
 		return false;

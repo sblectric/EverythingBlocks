@@ -33,13 +33,13 @@ public class EverythingSlabCraftingRecipes implements IRecipe {
 		
 		// make sure it matches a slab recipe style
 		if(Block.getBlockFromItem(s.get(0).getItem()) == EBBlocks.blockEverything) {
-			if(EBUtils.areItemStacksEqualandValid(inv.getStackInSlot(0), inv.getStackInSlot(1), inv.getStackInSlot(2))) {
+			if(EBUtils.areItemStacksEqualForCrafting(inv.getStackInSlot(0), inv.getStackInSlot(1), inv.getStackInSlot(2))) {
 				return true;
 			}
-			if(EBUtils.areItemStacksEqualandValid(inv.getStackInSlot(3), inv.getStackInSlot(4), inv.getStackInSlot(5))) {
+			if(EBUtils.areItemStacksEqualForCrafting(inv.getStackInSlot(3), inv.getStackInSlot(4), inv.getStackInSlot(5))) {
 				return true;
 			}
-			if(EBUtils.areItemStacksEqualandValid(inv.getStackInSlot(6), inv.getStackInSlot(7), inv.getStackInSlot(8))) {
+			if(EBUtils.areItemStacksEqualForCrafting(inv.getStackInSlot(6), inv.getStackInSlot(7), inv.getStackInSlot(8))) {
 				return true;
 			}
 		}

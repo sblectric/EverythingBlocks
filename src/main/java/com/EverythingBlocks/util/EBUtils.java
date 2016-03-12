@@ -79,12 +79,15 @@ public class EBUtils {
 		return EverythingColor.getAverageColor(contains);
     }
     
-    /** An unlimited type of areItemStacksEqual, but cannot be null */
-    public static boolean areItemStacksEqualandValid(ItemStack... stacks) {
+    /** An unlimited type of areItemStacksEqual for crafting recipes (non-amount sensitive, cannot be null) */
+    public static boolean areItemStacksEqualForCrafting(ItemStack... stacks) {
     	ItemStack comp = stacks[0];
     	if(comp == null) return false;
+    	ItemStack comp1 = comp.copy(); comp1.stackSize = 1;
     	for(int n = 1; n < stacks.length; n++) {
-    		if(!ItemStack.areItemStacksEqual(stacks[n], comp)) return false;
+    		if(stacks[n] == null) return false;
+    		ItemStack comp2 = stacks[n].copy(); comp2.stackSize = 1;
+    		if(!ItemStack.areItemStacksEqual(comp1, comp2)) return false;
     	}
     	return true;
     }
