@@ -11,7 +11,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumBlockRenderType;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -19,6 +21,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import com.EverythingBlocks.api.IBlockEverything;
 import com.EverythingBlocks.config.EBConfig;
+import com.EverythingBlocks.handler.BlockEvents;
 import com.EverythingBlocks.tiles.TileEntityBlockEverything;
 import com.EverythingBlocks.util.EBUtils;
 
@@ -44,18 +47,9 @@ public class StairEverything extends BlockStairs implements ITileEntityProvider,
 		return 0.75;
 	}
 	
-	/** Drop the block (make sure it's the exact type!) */
 	@Override
-	public boolean removedByPlayer(World world, BlockPos pos, EntityPlayer player, boolean willHarvest) { 
-		if(willHarvest) {
-			// read the tile entity position
-			TileEntityBlockEverything tile = (TileEntityBlockEverything)world.getTileEntity(pos);
-			ItemStack stack = getBlockContaining(tile.contains);
-			
-			// drop the item
-			spawnAsEntity(world, pos, stack);
-		}
-		return super.removedByPlayer(world, pos, player, willHarvest);
+	public void breakBlock(World world, BlockPos pos, IBlockState state) {
+		BlockEvents.doEverythingDrop(world, pos, this);
 	}
 	
 	/** Helper method to put an item into an Everything Block */
@@ -81,17 +75,16 @@ public class StairEverything extends BlockStairs implements ITileEntityProvider,
 		}
 	}
 	
-	/** Block coloring method */
-	@Override
-    @SideOnly(Side.CLIENT)
-    public int colorMultiplier(IBlockAccess world, BlockPos pos, int renderPass) {
-		return EBUtils.colorMultiplier(world, pos);
-    }
-	
     /** No standard drops from this block */
 	@Override
 	public ArrayList<ItemStack> getDrops(IBlockAccess world, BlockPos pos, IBlockState metadata, int fortune) {
 		return new ArrayList<ItemStack>(); // no drops
+	}
+	
+	/** Get the pick block */
+	@Override
+	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
+		return this.getBlockContaining(EBUtils.getBlockContains(world, pos));
 	}
 	
 	/** No silk touch code here */
@@ -100,19 +93,10 @@ public class StairEverything extends BlockStairs implements ITileEntityProvider,
     	return false;
     }
     
-    /**
-     * Gets an item for the block being called on. Args: world, x, y, z
-     */
-    @SideOnly(Side.CLIENT)
-    @Override
-    public Item getItem(World world, BlockPos pos) {
-    	return Item.getItemFromBlock(this);
-    }
-    
 	/** Render type: Standard block */
 	@Override
-	public int getRenderType() {
-		return 3;
+	public EnumBlockRenderType getRenderType(IBlockState state) {
+		return EnumBlockRenderType.MODEL;
 	}
 	
 	@Override

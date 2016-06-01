@@ -1,6 +1,6 @@
 [
 {
-  "modid": "EverythingBlocks",
+  "modid": "everythingblocks",
   "name": "Everything Blocks",
   "description": "Make blocks out of any item for dense storage and decoration!",
   "version": "${version}",

@@ -6,8 +6,6 @@ import java.util.List;
 import net.minecraft.item.Item;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.ModContainer;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.common.registry.GameRegistry.UniqueIdentifier;
 
 /** Forge-related utilities */
 public class ForgeUtils {
@@ -36,9 +34,8 @@ public class ForgeUtils {
 	
 	/** Get the name of the mod the item is from */
 	public static String getModNameFromItem(Item item) {
-		UniqueIdentifier u = GameRegistry.findUniqueIdentifierFor(item);
-		if(u != null) {
-			return getModNameFromID(u.modId);
+		if(item != null) {
+			return getModNameFromID(item.getRegistryName().getResourceDomain());
 		} else {
 			return ERROR;
 		}

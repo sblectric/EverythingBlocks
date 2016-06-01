@@ -1,6 +1,6 @@
 {
     "parent": "block/leaves",
     "textures": {
-        "all": "EverythingBlocks:blocks/everything_block"
+        "all": "everythingblocks:blocks/everything_block"
     }
 }

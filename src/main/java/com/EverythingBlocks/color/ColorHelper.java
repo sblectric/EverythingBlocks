@@ -1,9 +1,11 @@
-package com.EverythingBlocks.util;
+package com.EverythingBlocks.color;
 
 import java.awt.Color;
 import java.util.List;
 
-import net.minecraft.util.EnumChatFormatting;
+import com.EverythingBlocks.util.IntList;
+
+import net.minecraft.util.text.TextFormatting;
 
 public class ColorHelper {
 
@@ -59,16 +61,16 @@ public class ColorHelper {
 		return new Color((int)(r1 * pFirst + r2 * pSecond), (int)(g1 * pFirst + g2 * pSecond), (int)(b1 * pFirst + b2 * pSecond)).getRGB();
 	}
 	
-	public static EnumChatFormatting darkenFormatting(EnumChatFormatting col) {
-		if(col == EnumChatFormatting.AQUA) return EnumChatFormatting.DARK_AQUA;
-		if(col == EnumChatFormatting.BLUE) return EnumChatFormatting.DARK_BLUE;
-		if(col == EnumChatFormatting.GRAY) return EnumChatFormatting.DARK_GRAY;
-		if(col == EnumChatFormatting.GREEN) return EnumChatFormatting.DARK_GREEN;
-		if(col == EnumChatFormatting.LIGHT_PURPLE) return EnumChatFormatting.DARK_PURPLE;
-		if(col == EnumChatFormatting.RED) return EnumChatFormatting.DARK_RED;
-		if(col == EnumChatFormatting.YELLOW) return EnumChatFormatting.GOLD;
-		if(col == EnumChatFormatting.DARK_GRAY) return EnumChatFormatting.BLACK;
-		if(col == EnumChatFormatting.WHITE) return EnumChatFormatting.GRAY;
+	public static TextFormatting darkenFormatting(TextFormatting col) {
+		if(col == TextFormatting.AQUA) return TextFormatting.DARK_AQUA;
+		if(col == TextFormatting.BLUE) return TextFormatting.DARK_BLUE;
+		if(col == TextFormatting.GRAY) return TextFormatting.DARK_GRAY;
+		if(col == TextFormatting.GREEN) return TextFormatting.DARK_GREEN;
+		if(col == TextFormatting.LIGHT_PURPLE) return TextFormatting.DARK_PURPLE;
+		if(col == TextFormatting.RED) return TextFormatting.DARK_RED;
+		if(col == TextFormatting.YELLOW) return TextFormatting.GOLD;
+		if(col == TextFormatting.DARK_GRAY) return TextFormatting.BLACK;
+		if(col == TextFormatting.WHITE) return TextFormatting.GRAY;
 		return col;
 	}
 

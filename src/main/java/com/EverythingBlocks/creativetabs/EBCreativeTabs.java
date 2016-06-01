@@ -17,7 +17,7 @@ public class EBCreativeTabs {
 		if(EBConfig.enableCreativeTabVariants) {
 			main = new EBCreativeTab("ebMain");
 		} else {
-			main = CreativeTabs.tabDecorations;
+			main = CreativeTabs.DECORATIONS;
 		}
 	}
 	

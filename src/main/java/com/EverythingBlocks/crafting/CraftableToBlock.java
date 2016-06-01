@@ -9,7 +9,6 @@ import net.minecraft.item.ItemSkull;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.GameData;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.common.registry.GameRegistry.UniqueIdentifier;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
@@ -34,15 +33,15 @@ public class CraftableToBlock {
 		allItems = GameData.getItemRegistry().typeSafeIterable();
 		for(Item i : allItems) {
 			// check to make sure the mod for the item is not BL'd
-			UniqueIdentifier UID = GameRegistry.findUniqueIdentifierFor(i);
-			if(EBConfig.blacklistedMods.contains(UID.modId)) continue;
+			String modId = i.getRegistryName().getResourceDomain();
+			if(EBConfig.blacklistedMods.contains(modId)) continue;
 			
 			// get all of the exposed subitems for this item
 			JointList<ItemStack> j = new JointList<ItemStack>();
 			if(i instanceof IOverrideEBSubtypes) {
 				((IOverrideEBSubtypes)i).getEBSubtypes(i, j);
 			} else {
-				i.getSubItems(i, CreativeTabs.tabAllSearch, j);
+				i.getSubItems(i, CreativeTabs.SEARCH, j);
 			}
 			for(ItemStack s : j) {
 				// check each one for eligibility

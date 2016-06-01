@@ -1,12 +1,10 @@
 package com.EverythingBlocks.tiles;
 
-import com.EverythingBlocks.blocks.EBBlocks;
-
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
-import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
+import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 
 public class TileEntityBlockEverything extends TileEntity {
@@ -24,25 +22,30 @@ public class TileEntityBlockEverything extends TileEntity {
     
 	/** Save tile entity data */
     @Override
-    public void writeToNBT(NBTTagCompound tag) {
+    public NBTTagCompound writeToNBT(NBTTagCompound tag) {
     	super.writeToNBT(tag);
     	if(this.contains != null) {
 	    	NBTTagCompound c = new NBTTagCompound();
 	    	this.contains.writeToNBT(c);
 	    	tag.setTag("contains", c);
     	}
+    	return tag;
     }
     
 	@Override
-	public Packet getDescriptionPacket() {
+	public NBTTagCompound getUpdateTag() {
 		NBTTagCompound tagCompound = new NBTTagCompound();
-		writeToNBT(tagCompound);
-		return new S35PacketUpdateTileEntity(pos, 0, tagCompound);
+		return this.writeToNBT(tagCompound);
 	}
-
+ 
 	@Override
-	public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
-		readFromNBT(pkt.getNbtCompound());
-	}
+    public SPacketUpdateTileEntity getUpdatePacket() {
+        return new SPacketUpdateTileEntity(this.getPos(), 0, getUpdateTag());
+    }
+	
+    @Override
+    public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
+		this.readFromNBT(pkt.getNbtCompound());
+    }
 
 }

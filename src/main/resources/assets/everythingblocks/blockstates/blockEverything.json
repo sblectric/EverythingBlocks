@@ -1,5 +1,5 @@
 {
     "variants": {
-        "normal": { "model": "EverythingBlocks:blockEverything" }
+        "normal": { "model": "everythingblocks:blockEverything" }
     }
 }

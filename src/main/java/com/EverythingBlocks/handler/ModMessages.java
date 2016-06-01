@@ -4,8 +4,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.event.FMLInterModComms.IMCEvent;
 import net.minecraftforge.fml.common.event.FMLInterModComms.IMCMessage;
 
+import com.EverythingBlocks.color.EverythingColor;
 import com.EverythingBlocks.crafting.CraftableToBlock;
-import com.EverythingBlocks.render.EverythingColor;
 
 public class ModMessages {
 	

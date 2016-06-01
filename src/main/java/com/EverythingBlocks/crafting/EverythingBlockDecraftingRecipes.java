@@ -1,15 +1,14 @@
 package com.EverythingBlocks.crafting;
 
-import com.EverythingBlocks.blocks.EBBlocks;
-import com.EverythingBlocks.items.ItemBlockEverything;
-import com.EverythingBlocks.util.JointList;
-
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.world.World;
+
+import com.EverythingBlocks.blocks.EBBlocks;
+import com.EverythingBlocks.util.JointList;
 
 public class EverythingBlockDecraftingRecipes implements IRecipe {
 
@@ -55,7 +54,7 @@ public class EverythingBlockDecraftingRecipes implements IRecipe {
 	/** No default recipe output */
 	@Override
 	public ItemStack getRecipeOutput() {
-		return new ItemStack(Blocks.air);
+		return new ItemStack(Blocks.AIR);
 	}
 
 	/** No remaining items */

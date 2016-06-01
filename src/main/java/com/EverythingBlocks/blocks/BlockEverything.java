@@ -3,6 +3,7 @@ package com.EverythingBlocks.blocks;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -10,16 +11,17 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumBlockRenderType;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import com.EverythingBlocks.api.IBlockEverything;
-import com.EverythingBlocks.render.EverythingColor;
+import com.EverythingBlocks.handler.BlockEvents;
 import com.EverythingBlocks.tiles.TileEntityBlockEverything;
 import com.EverythingBlocks.util.EBUtils;
 import com.EverythingBlocks.util.JointList;
@@ -29,9 +31,9 @@ public class BlockEverything extends BlockContainer implements IBlockEverything 
 	
 	/** field to hold eligible item stacks for display */
 	public static List<ItemStack> eligibleItemStacks = new JointList<ItemStack>();
-
+	
 	public BlockEverything() {
-		super(Material.rock);
+		super(Material.ROCK);
 		this.setHardness(3.0f);
 		this.setResistance(15.0f);
 	}
@@ -48,18 +50,9 @@ public class BlockEverything extends BlockContainer implements IBlockEverything 
 		return 1.0;
 	}
 	
-	/** Drop the block (make sure it's the exact type!) */
 	@Override
-	public boolean removedByPlayer(World world, BlockPos pos, EntityPlayer player, boolean willHarvest) {
-		if(willHarvest) {
-			// read the tile entity position
-			TileEntityBlockEverything tile = (TileEntityBlockEverything)world.getTileEntity(pos);
-			ItemStack stack = getBlockContaining(tile.contains);
-			
-			// drop the item
-			spawnAsEntity(world, pos, stack);
-		}
-		return super.removedByPlayer(world, pos, player, willHarvest);
+	public void breakBlock(World world, BlockPos pos, IBlockState state) {
+		BlockEvents.doEverythingDrop(world, pos, this);
 	}
 	
 	/** Helper method to put an item into an Everything Block */
@@ -81,23 +74,22 @@ public class BlockEverything extends BlockContainer implements IBlockEverything 
 		EBUtils.getSubBlocks(item, tab, list, this);
 	}
 	
-	/** Block coloring method */
-	@Override
-    @SideOnly(Side.CLIENT)
-    public int colorMultiplier(IBlockAccess world, BlockPos pos, int renderPass) {
-		return EBUtils.colorMultiplier(world, pos);
-    }
-	
 	/** Render type: Standard block */
 	@Override
-	public int getRenderType() {
-		return 3;
+	public EnumBlockRenderType getRenderType(IBlockState state) {
+		return EnumBlockRenderType.MODEL;
 	}
 	
     /** No standard drops from this block */
 	@Override
 	public ArrayList<ItemStack> getDrops(IBlockAccess world, BlockPos pos, IBlockState metadata, int fortune) {
 		return new ArrayList<ItemStack>(); // no drops
+	}
+	
+	/** Get the pick block */
+	@Override
+	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
+		return this.getBlockContaining(EBUtils.getBlockContains(world, pos));
 	}
 	
 	/** No silk touch code here */

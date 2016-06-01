@@ -1,9 +1,10 @@
-package com.EverythingBlocks.render;
+package com.EverythingBlocks.color;
 
 import java.awt.Color;
 import java.util.HashMap;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.color.ItemColors;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
@@ -16,7 +17,6 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import com.EverythingBlocks.api.IOverrideEBColor;
 import com.EverythingBlocks.main.Log;
-import com.EverythingBlocks.util.ColorHelper;
 import com.EverythingBlocks.util.IntList;
 
 /** Coloring for Everything Blocks */
@@ -55,6 +55,8 @@ public class EverythingColor {
 	/** Find the average color of an item */
 	public static int getAverageColorUnbounded(ItemStack stack) {
 		
+		ItemColors cols = Minecraft.getMinecraft().getItemColors();
+		
 		// null -> return white
 		if(stack == null) return DEFAULT_COLOR;
 		ItemStack nStack = stack.copy();
@@ -75,12 +77,12 @@ public class EverythingColor {
 		
 		// the color of potion stacks is their liquid color
 		if(item instanceof ItemPotion) {
-			return addStackToColorCache(nStack, item.getColorFromItemStack(stack, 0));
+			return addStackToColorCache(nStack, cols.getColorFromItemstack(stack, 0));
 		}
 		
 		// the color of spawn egg blocks is the average of their layers
 		if(item instanceof ItemMonsterPlacer) {
-			IntList colList = (IntList) new IntList().join(item.getColorFromItemStack(stack, 0)).join(item.getColorFromItemStack(stack, 1));
+			IntList colList = (IntList) new IntList().join(cols.getColorFromItemstack(stack, 0)).join(cols.getColorFromItemstack(stack, 1));
 			return addStackToColorCache(nStack, ColorHelper.averageColors(colList));
 		}
 		
@@ -93,7 +95,7 @@ public class EverythingColor {
         try {
 			// get the texture from the ItemStack (IN GAME, not in init methods or events!)
 			TextureAtlasSprite sprite = Minecraft.getMinecraft().getRenderItem().getItemModelMesher().getItemModel(nStack).getParticleTexture();
-			if(sprite == null) return addStackToColorCache(nStack, item.getColorFromItemStack(stack, 0)); // default to item stack color
+			if(sprite == null) return addStackToColorCache(nStack, cols.getColorFromItemstack(stack, 0)); // default to item stack color
 			int w = sprite.getIconWidth();
 	        int h = sprite.getIconHeight();
 		
@@ -112,7 +114,7 @@ public class EverythingColor {
 			int baseColor = ColorHelper.averageColors(colors);
 			
 			// now get the defined item stack color
-			int stackColor = item.getColorFromItemStack(stack, 0);
+			int stackColor = cols.getColorFromItemstack(stack, 0);
 			
 			// get the subtractive mix, add it to the cache, and return!
 			return addStackToColorCache(nStack, ColorHelper.subtractMixColors(baseColor, stackColor));

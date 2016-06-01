@@ -8,10 +8,10 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -21,9 +21,8 @@ import org.lwjgl.input.Keyboard;
 import com.EverythingBlocks.api.IAddEBInformation;
 import com.EverythingBlocks.api.IBlockEverything;
 import com.EverythingBlocks.api.IReplaceEBInformation;
-import com.EverythingBlocks.render.EverythingColor;
+import com.EverythingBlocks.color.ColorHelper;
 import com.EverythingBlocks.tiles.TileEntityBlockEverything;
-import com.EverythingBlocks.util.ColorHelper;
 import com.EverythingBlocks.util.EBUtils;
 import com.EverythingBlocks.util.ForgeUtils;
 
@@ -44,7 +43,7 @@ public class ItemBlockEverything extends ItemBlock {
     public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean par4) {
 		
 		// it's an Everything Block
-		list.add(StatCollector.translateToLocal(stack.getUnlocalizedName() + ".name"));
+		list.add(I18n.translateToLocal(stack.getUnlocalizedName() + ".name"));
 		
 		// add item details
 		if(stack.hasTagCompound()) {
@@ -67,11 +66,11 @@ public class ItemBlockEverything extends ItemBlock {
 			
 			// what mod is it from?
 			if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-				list.add(EnumChatFormatting.DARK_GRAY + "" + EnumChatFormatting.ITALIC + ForgeUtils.getModNameFromItem(item));
+				list.add(TextFormatting.DARK_GRAY + "" + TextFormatting.ITALIC + ForgeUtils.getModNameFromItem(item));
 			}
 			
 		} else {
-			list.add(EnumChatFormatting.ITALIC + "[Any Item]"); // generic block
+			list.add(TextFormatting.ITALIC + "[Any Item]"); // generic block
 		}
     }
 	
@@ -92,19 +91,6 @@ public class ItemBlockEverything extends ItemBlock {
 		return flag;
 	}
 	
-	/** Coloring! */
-	@Override
-    @SideOnly(Side.CLIENT)
-    public int getColorFromItemStack(ItemStack stack, int par2) {
-		ItemStack contains;
-		if(stack.hasTagCompound()) {
-			contains = block.getItemStackFromBlock(stack);
-		} else {
-			contains = null;
-		}
-        return EverythingColor.getAverageColor(contains);
-    }
-	
 	/** Display a dynamic name based on the item the block is made from */
 	@Override
 	public String getItemStackDisplayName(ItemStack stack) {
@@ -113,7 +99,7 @@ public class ItemBlockEverything extends ItemBlock {
 			try {
 				return contains.getDisplayName() + " " + block.getBlockSuffix();
 			} catch(Exception e) {
-				return StatCollector.translateToLocal(contains.getUnlocalizedName() + ".name") + " " + block.getBlockSuffix();
+				return I18n.translateToLocal(contains.getUnlocalizedName() + ".name") + " " + block.getBlockSuffix();
 			}
 		} else {
 			return super.getItemStackDisplayName(stack);

@@ -1,5 +1,6 @@
 package com.EverythingBlocks.api;
 
+import net.minecraft.client.renderer.color.IBlockColor;
 import net.minecraft.item.ItemStack;
 
 /** Helper interface to reference Everything Block methods. This could also be 

@@ -4,19 +4,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.block.BlockSlab;
-import net.minecraft.block.BlockStoneSlab;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
-import net.minecraft.block.state.BlockState;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumBlockRenderType;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -24,6 +25,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import com.EverythingBlocks.api.IBlockEverything;
 import com.EverythingBlocks.config.EBConfig;
+import com.EverythingBlocks.handler.BlockEvents;
 import com.EverythingBlocks.tiles.TileEntityBlockEverything;
 import com.EverythingBlocks.util.EBUtils;
 
@@ -32,7 +34,7 @@ public class SlabEverything extends BlockSlab implements ITileEntityProvider, IB
 	private static final PropertyBool VARIANT = PropertyBool.create("variant");
 
 	public SlabEverything() {
-		super(Material.rock);
+		super(Material.ROCK);
 		this.setHardness(3.0f);
 		this.setResistance(15.0f);
 		this.useNeighborBrightness = true;
@@ -54,8 +56,14 @@ public class SlabEverything extends BlockSlab implements ITileEntityProvider, IB
 		return 0.5;
 	}
 	
-    protected BlockState createBlockState() {
-        return new BlockState(this, new IProperty[] {HALF, VARIANT});
+	@Override
+	public void breakBlock(World world, BlockPos pos, IBlockState state) {
+		BlockEvents.doEverythingDrop(world, pos, this);
+	}
+	
+	@Override
+    protected BlockStateContainer createBlockState() {
+        return new BlockStateContainer(this, new IProperty[] {HALF, VARIANT});
     }
     
     /**
@@ -80,20 +88,6 @@ public class SlabEverything extends BlockSlab implements ITileEntityProvider, IB
 
         return i;
     }
-
-	/** Drop the block (make sure it's the exact type!) */
-	@Override
-	public boolean removedByPlayer(World world, BlockPos pos, EntityPlayer player, boolean willHarvest) {
-		if(willHarvest) {
-			// read the tile entity position
-			TileEntityBlockEverything tile = (TileEntityBlockEverything)world.getTileEntity(pos);
-			ItemStack stack = getBlockContaining(tile.contains);
-			
-			// drop the item
-			spawnAsEntity(world, pos, stack);
-		}
-		return super.removedByPlayer(world, pos, player, willHarvest);
-	}
 	
 	/** Helper method to put an item into an Everything Block */
 	@Override
@@ -118,38 +112,28 @@ public class SlabEverything extends BlockSlab implements ITileEntityProvider, IB
 		}
 	}
 	
-	/** Block coloring method */
-	@Override
-    @SideOnly(Side.CLIENT)
-    public int colorMultiplier(IBlockAccess world, BlockPos pos, int renderPass) {
-		return EBUtils.colorMultiplier(world, pos);
-    }
-	
     /** No standard drops from this block */
 	@Override
 	public ArrayList<ItemStack> getDrops(IBlockAccess world, BlockPos pos, IBlockState metadata, int fortune) {
 		return new ArrayList<ItemStack>(); // no drops
 	}
 	
+	/** Get the pick block */
+	@Override
+	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
+		return this.getBlockContaining(EBUtils.getBlockContains(world, pos));
+	}
+	
 	/** No silk touch code here */
     @Override
-	public boolean canSilkHarvest() {
+	public boolean canSilkHarvest() { 
     	return false;
-    }
-    
-    /**
-     * Gets an item for the block being called on. Args: world, x, y, z
-     */
-    @SideOnly(Side.CLIENT)
-    @Override
-    public Item getItem(World world, BlockPos pos) {
-    	return Item.getItemFromBlock(this);
     }
     
 	/** Render type: Standard block */
 	@Override
-	public int getRenderType() {
-		return 3;
+	public EnumBlockRenderType getRenderType(IBlockState state) {
+		return EnumBlockRenderType.MODEL;
 	}
 
 	/** A tile entity is necessary */
@@ -173,20 +157,15 @@ public class SlabEverything extends BlockSlab implements ITileEntityProvider, IB
 		return VARIANT;
 	}
 
-	/**
-     * Gets the value of the variant property based on the item.
-     * @param itemStack item stack.
-     * @return the variant value null.
-     */
-	@Override
-	public Object getVariant(ItemStack stack) {
-		return false;
-	}
-
 	/** Name */
 	@Override
 	public String getUnlocalizedName(int meta) {
 		return this.getUnlocalizedName();
+	}
+
+	@Override
+	public Comparable<?> getTypeForItem(ItemStack stack) {
+		return false;
 	}
 
 }

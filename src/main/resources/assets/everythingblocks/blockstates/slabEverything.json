@@ -1,8 +1,8 @@
 {
     "variants": {
-		"half=bottom,variant=true": { "model": "EverythingBlocks:slabEverything_bottom" },
-		"half=top,variant=true": { "model": "EverythingBlocks:slabEverything_top" },
-		"half=bottom,variant=false": { "model": "EverythingBlocks:slabEverything_bottom" },
-        "half=top,variant=false": { "model": "EverythingBlocks:slabEverything_top" }
+		"half=bottom,variant=true": { "model": "everythingblocks:slabEverything_bottom" },
+		"half=top,variant=true": { "model": "everythingblocks:slabEverything_top" },
+		"half=bottom,variant=false": { "model": "everythingblocks:slabEverything_bottom" },
+        "half=top,variant=false": { "model": "everythingblocks:slabEverything_top" }
     }
 }
