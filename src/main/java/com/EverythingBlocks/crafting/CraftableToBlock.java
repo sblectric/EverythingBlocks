@@ -2,17 +2,17 @@ package com.EverythingBlocks.crafting;
 
 import java.util.List;
 
+import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemSkull;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.GameData;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
 
+import com.EverythingBlocks.api.IBlockEverything;
 import com.EverythingBlocks.api.IHasEverythingBlockCond;
 import com.EverythingBlocks.api.IHasNoEverythingBlock;
 import com.EverythingBlocks.api.IOverrideEBSubtypes;
@@ -74,11 +74,14 @@ public class CraftableToBlock {
 		return isItemStackValid(s) && isItemStackCraftable(s);
 	}
 	
-	/** Condition: can't be a block or incompatible item */
+	/** Condition: can't be an incompatible item */
 	private static boolean isItemStackValid(ItemStack s) {
 		Item i = s.getItem();
+		Block b = Block.getBlockFromItem(i);
 		// no blocks or excluded items
-		boolean negcond = i instanceof ItemBlock || i instanceof ItemSkull || i instanceof IHasNoEverythingBlock;
+		boolean negcond = b != null && b instanceof IBlockEverything;
+		if(EBConfig.ignoreBlocks) negcond |= i instanceof ItemBlock;
+		negcond |= i instanceof IHasNoEverythingBlock;
 		negcond |= i instanceof IHasEverythingBlockCond && !((IHasEverythingBlockCond)i).hasEverythingBlock(s);
 		negcond |= itemBlacklist.contains(s.getItem().toString()) || stackBlacklist.contains(s.toString());
 		return !negcond;

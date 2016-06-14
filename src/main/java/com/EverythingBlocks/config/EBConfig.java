@@ -11,6 +11,7 @@ public class EBConfig {
 	
 	public static boolean ignore2x2Recipes;
 	public static boolean ignore3x3Recipes;
+	public static boolean ignoreBlocks;
 	public static boolean enableCreativeTabVariants;
 	public static boolean showSlabs;
 	public static boolean showStairs;
@@ -20,8 +21,9 @@ public class EBConfig {
 	/** Set config defaults */
 	private static void setDefaultValues() {
 		// crafting
-		ignore2x2Recipes = false;
+		ignore2x2Recipes = true;
 		ignore3x3Recipes = false;
+		ignoreBlocks = false;
 		
 		// creative tab
 		enableCreativeTabVariants = false;
@@ -77,8 +79,13 @@ public class EBConfig {
 		p.setComment("Set to true to be able to craft Everything Blocks made from items that have existing 3x3 crafting recipes (not recommended).");
 		ignore3x3Recipes = p.getBoolean();
 		
+		// Blocks craftable?
+		p = config.get("Crafting", "Ignore Blocks", ignoreBlocks);
+		p.setComment("Set to true to have only items craftable into Everything Blocks, not other blocks (old behavior).");
+		ignoreBlocks = p.getBoolean();
+		
 		// write all to disk
-		config.save();
+		if(config.hasChanged()) config.save();
 	}
 
 }
